@@ -31,6 +31,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	xssPayloads := []string{
 		"<script>alert('XSS1');</script>",
 		"<img src=\"javascript:alert('XSS2')\">",
+		//https://github.com/payloadbox/xss-payload-list
 	}
 	for _, payload := range xssPayloads {
 		if strings.Contains(string(body), payload) {
