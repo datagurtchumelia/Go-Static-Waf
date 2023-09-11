@@ -25,6 +25,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		sendTelegramMessage(fmt.Sprintf("SQL injection detected from IP: %s with User-Agent: %s", r.RemoteAddr, r.UserAgent()))
 		http.Error(w, "SQL injection detected and blocked", http.StatusForbidden)
 		return
+		//https://github.com/payloadbox/sql-injection-payload-list
 	}
 
 	//  XSS attacks using example payloads
