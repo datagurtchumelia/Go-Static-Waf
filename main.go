@@ -20,20 +20,30 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//  SQL injection attacks using SQLmap
-	if strings.Contains(string(body), "--random-agent --technique=T --level=5") {
-		sendTelegramMessage(fmt.Sprintf("SQL injection detected from IP: %s with User-Agent: %s", r.RemoteAddr, r.UserAgent()))
-		http.Error(w, "SQL injection detected and blocked", http.StatusForbidden)
-		return
-		//https://github.com/payloadbox/sql-injection-payload-list
+	// SQL injection attacks using SQLmap
+	sqliPayloads := []string{
+		"--random-agent --technique=T --level=5",
+		"UNION ALL SELECT",
+		"1=1",
+		"DROP TABLE",
+		// Add more SQL injection payloads as needed
 	}
 
-	//  XSS attacks using example payloads
+	for _, payload := range sqliPayloads {
+		if strings.Contains(string(body), payload) {
+			sendTelegramMessage(fmt.Sprintf("SQL injection detected from IP: %s with User-Agent: %s", r.RemoteAddr, r.UserAgent()))
+			http.Error(w, "SQL injection detected and blocked", http.StatusForbidden)
+			return
+		}
+	}
+
+	// XSS attacks using example payloads
 	xssPayloads := []string{
 		"<script>alert('XSS1');</script>",
 		"<img src=\"javascript:alert('XSS2')\">",
-		//https://github.com/payloadbox/xss-payload-list
+		// Add more XSS payloads as needed
 	}
+
 	for _, payload := range xssPayloads {
 		if strings.Contains(string(body), payload) {
 			sendTelegramMessage(fmt.Sprintf("XSS attack detected from IP: %s with User-Agent: %s", r.RemoteAddr, r.UserAgent()))
