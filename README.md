@@ -1,4 +1,4 @@
-<h1>Go Security Middleware for SQL Injection and XSS Detection</h1>
+<h1>Go Static Waf Middleware for SQL Injection and XSS Detection</h1>
 
 <p>This Go code is a simple security middleware that can be integrated into your web application to detect and block SQL injection and XSS (Cross-Site Scripting) attacks. It also sends alerts to a Telegram channel when an attack is detected.</p>
 
